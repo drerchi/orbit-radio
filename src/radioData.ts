@@ -14,12 +14,7 @@ export type Station = {
 }
 
 export function normalizeStreamUrl(value: string) {
-  const streamUrl = value.trim()
-  if (!streamUrl) return streamUrl
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:' && /^http:\/\//i.test(streamUrl)) {
-    return streamUrl.replace(/^http:/i, 'https:')
-  }
-  return streamUrl
+  return value.trim()
 }
 
 export const categories = [
@@ -60,7 +55,7 @@ export const sampleStations: Station[] = [
   { id: 'somafm-tokyo', name: 'SomaFM Groove Salad', country: 'Japan', countryCode: 'JP', city: 'Tokyo', genre: 'Ambient', tags: ['ambient', 'downtempo', 'electronic'], streamUrl: 'https://ice1.somafm.com/groovesalad-128-mp3', lat: 35.68, lon: 139.69, listeners: 670 },
   { id: 'j-wave', name: 'J-WAVE 81.3 FM', country: 'Japan', countryCode: 'JP', city: 'Tokyo', genre: 'Pop', tags: ['japanese', 'pop', 'music'], streamUrl: 'https://musicbird.leanstream.co/JWAVE', lat: 35.67, lon: 139.76, listeners: 730 },
   { id: 'radio-nova', name: 'Radio Nova', country: 'France', countryCode: 'FR', city: 'Paris', genre: 'Jazz', tags: ['jazz', 'soul', 'world'], streamUrl: 'https://novazz.ice.infomaniak.ch/novazz-128.mp3', lat: 48.87, lon: 2.33, listeners: 430 },
-  { id: 'zakarpattya-fm', name: 'Zakarpattya FM 101.9', country: 'Ukraine', countryCode: 'UA', city: 'Uzhhorod', genre: 'Pop', tags: ['ukrainian', 'pop', 'local'], streamUrl: 'https://stream.radio.co/sd8d9f2ba7/listen', lat: 48.62, lon: 22.30, listeners: 1 },
+  { id: 'zakarpattya-fm', name: 'Zakarpattya FM 101.9', country: 'Ukraine', countryCode: 'UA', city: 'Uzhhorod', genre: 'Pop', tags: ['ukrainian', 'pop', 'local'], streamUrl: 'http://195.234.148.51.nip.io:8000/stream', lat: 48.62, lon: 22.30, listeners: 1 },
   { id: 'kiss-fm-ukraine', name: 'Kiss FM Ukrainian', country: 'Ukraine', countryCode: 'UA', city: 'Kyiv', genre: 'Electronic', tags: ['electronic', 'dance', 'ukrainian'], streamUrl: 'https://online.kissfm.ua/KissFM_Ukr', lat: 50.45, lon: 30.52, listeners: 34 },
   { id: 'kiss-fm-ukraine-hd', name: 'Kiss FM Ukraine', country: 'Ukraine', countryCode: 'UA', city: 'Kyiv', genre: 'Electronic', tags: ['electronic', 'dance', 'ukrainian'], streamUrl: 'https://online.kissfm.ua/KissFM_HD', lat: 50.45, lon: 30.52, listeners: 31 },
   { id: 'dance-wave-hungary', name: 'Dance Wave!', country: 'Hungary', countryCode: 'HU', city: 'Budapest', genre: 'Electronic', tags: ['dance', 'electronic', 'house'], streamUrl: 'https://dancewave.online/dance.mp3', lat: 47.50, lon: 19.04, listeners: 397 },
