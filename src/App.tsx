@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Activity, ArrowDownUp, ChevronDown, Disc3, Heart, Headphones, LoaderCircle, MapPin, MoreHorizontal, Pause, Play, Radio, Search, SkipBack, SkipForward, Volume2, X } from 'lucide-react'
-import { categories, countries, sampleStations, stationFromDirectory, type Station } from './radioData'
+import { categories, countries, normalizeStreamUrl, sampleStations, stationFromDirectory, type Station } from './radioData'
 
 const FAVORITES_KEY = 'orbit-radio-favorites'
 const GENRES_KEY = 'orbit-radio-genres'
@@ -100,10 +100,11 @@ function App() {
 
   const allStations = useMemo(() => {
     const unique = new Map<string, Station>()
-    const featuredStreams = new Set(sampleStations.map((station) => station.streamUrl.trim().replace(/\/+$/, '').toLowerCase()))
-    sampleStations.forEach((station) => unique.set(station.id, station))
+    const featuredStreams = new Set(sampleStations.map((station) => normalizeStreamUrl(station.streamUrl).trim().replace(/\/+$/, '').toLowerCase()))
+    sampleStations.forEach((station) => unique.set(station.id, { ...station, streamUrl: normalizeStreamUrl(station.streamUrl) }))
     directoryStations.forEach((station) => {
-      if (!featuredStreams.has(station.streamUrl.trim().replace(/\/+$/, '').toLowerCase())) unique.set(station.id, station)
+      const normalizedStream = normalizeStreamUrl(station.streamUrl)
+      if (!featuredStreams.has(normalizedStream.trim().replace(/\/+$/, '').toLowerCase())) unique.set(station.id, { ...station, streamUrl: normalizedStream })
     })
     return [...unique.values()]
   }, [directoryStations])
@@ -126,12 +127,13 @@ function App() {
     if (activeStation.id === station.id && isPlaying) {
       audio.pause(); setIsPlaying(false); setIsLoading(false); return
     }
-    setActiveStation(station)
+    const streamUrl = normalizeStreamUrl(station.streamUrl)
+    setActiveStation({ ...station, streamUrl })
     setIsLoading(true)
     setPlaybackError('')
     setCurrentTime(0)
     setDuration(0)
-    audio.src = station.streamUrl
+    audio.src = streamUrl
     audio.load()
     audio.play().then(() => { setIsPlaying(true); setIsLoading(false) }).catch((error: unknown) => {
       setIsPlaying(false); setIsLoading(false)

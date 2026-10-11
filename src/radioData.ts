@@ -13,6 +13,15 @@ export type Station = {
   favicon?: string
 }
 
+export function normalizeStreamUrl(value: string) {
+  const streamUrl = value.trim()
+  if (!streamUrl) return streamUrl
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:' && /^http:\/\//i.test(streamUrl)) {
+    return streamUrl.replace(/^http:/i, 'https:')
+  }
+  return streamUrl
+}
+
 export const categories = [
   { name: 'All stations', icon: '◉' },
   { name: 'Jazz', icon: '♫' },
@@ -60,7 +69,7 @@ export const sampleStations: Station[] = [
 ]
 
 export function stationFromDirectory(item: Record<string, unknown>): Station | null {
-  const streamUrl = String(item.url_resolved || item.url || '')
+  const streamUrl = normalizeStreamUrl(String(item.url_resolved || item.url || ''))
   const name = String(item.name || '').trim()
   if (!name || !streamUrl) return null
   const country = String(item.country || 'Unknown')
