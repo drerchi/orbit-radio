@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Activity, ArrowDownUp, ChevronDown, Disc3, Heart, Headphones, LoaderCircle, MapPin, MoreHorizontal, Pause, Play, Radio, Search, SkipBack, SkipForward, Volume2, X } from 'lucide-react'
 import { categories, countries, normalizeStreamUrl, sampleStations, stationFromDirectory, type Station } from './radioData'
+import { buildStreamUrl } from './streamProxy'
 
 const FAVORITES_KEY = 'orbit-radio-favorites'
 const GENRES_KEY = 'orbit-radio-genres'
@@ -127,7 +128,7 @@ function App() {
     if (activeStation.id === station.id && isPlaying) {
       audio.pause(); setIsPlaying(false); setIsLoading(false); return
     }
-    const streamUrl = normalizeStreamUrl(station.streamUrl)
+    const streamUrl = buildStreamUrl(station.streamUrl)
     setActiveStation({ ...station, streamUrl })
     setIsLoading(true)
     setPlaybackError('')
